@@ -1,0 +1,44 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: workshop-deployment
+spec:
+  replicas: 3
+  selector:
+    matchLabels:
+      app: workshop
+  template:
+    metadata:
+      labels:
+        app: workshop
+    spec:
+      containers:
+        - name: workshop
+          image: workshop:latest  # Your Spring Boot app Docker image
+          imagePullPolicy: Never
+          ports:
+            - containerPort: 8084
+          env:
+            - name: DB_HOST
+              value: mysql
+            - name: DB_NAME
+              value: springBase
+            - name: DB_USERNAME
+              value: root
+            - name: DB_PASSWORD
+              value: mounir
+
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: workshop-service  # Name of the Kubernetes service
+spec:
+  type: NodePort
+  selector:
+    app: workshop  # Label that the service will match to connect to pods
+  ports:
+    - protocol: "TCP"
+      port: 8084  # Port exposed by the service
+      targetPort: 8084
+      nodePort: 30007
