@@ -14,7 +14,7 @@ spec:
     spec:
       containers:
         - name: workshop
-          image: workshop:latest  # Your Spring Boot app Docker image
+          image: workshop:latest
           imagePullPolicy: Never
           ports:
             - containerPort: 8084
@@ -32,13 +32,13 @@ spec:
 apiVersion: v1
 kind: Service
 metadata:
-  name: workshop-service  # Name of the Kubernetes service
+  name: workshop-service
 spec:
   type: NodePort
   selector:
-    app: workshop  # Label that the service will match to connect to pods
+    app: workshop
   ports:
     - protocol: "TCP"
-      port: 8084  # Port exposed by the service
+      port: 8084
       targetPort: 8084
       nodePort: 30007
